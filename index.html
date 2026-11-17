@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>إيكو سكراب | منصة إعادة التدوير وبيع الخردة</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- الشريط العلوي -->
+  <header class="navbar">
+    <div class="container nav-content">
+      <div class="logo">
+        <span class="logo-icon"><i class="fa-solid fa-recycle"></i></span>
+        <div>
+          <h1>إيكو سكراب</h1>
+          <small>حوّل خردتك لكاش فوري</small>
+        </div>
+      </div>
+
+      <nav class="nav-links">
+        <a href="#materials">الأسعار</a>
+        <a href="#calculator">حاسبة الأرباح</a>
+        <a href="#how">كيف نعمل؟</a>
+        <a href="#branches">مراكز التجميع</a>
+      </nav>
+
+      <button class="cart-btn" onclick="toggleCart()">
+        <i class="fa-solid fa-truck-pickup"></i>
+        <span>طلب البيع</span>
+        <span class="badge" id="cartCount">0</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- القسم الرئيسي Hero -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-text">
+        <span class="pill">♻️ أعلى سعر للكيلو في مصر • استلام من باب البيت</span>
+        <h2>عندك خردة أو مخلفات؟<br><span>بيعها أونلاين واستلم فلوسك كاش!</span></h2>
+        <p>
+          منصة ذكية لبيع المعادن، البلاستيك، الكرتون، والأجهزة القديمة بأعلى أسعار البورصة اليومية.
+          احسب قيمة خردتك الآن واطلب مندوبنا يوصلك لحد باب البيت بميزان إلكتروني معتمد.
+        </p>
+        <div class="hero-actions">
+          <a href="#calculator" class="btn-primary">
+            <i class="fa-solid fa-calculator"></i> احسب سعر خردتك الآن
+          </a>
+          <button class="btn-secondary" onclick="openChat()">
+            <i class="fa-solid fa-robot"></i> اسأل المساعد الذكي
+          </button>
+        </div>
+
+        <div class="stats">
+          <div class="stat-item">
+            <strong>+15,000</strong>
+            <span>طن تم تدويره</span>
+          </div>
+          <div class="stat-item">
+            <strong>24 ساعة</strong>
+            <span>سرعة الاستلام</span>
+          </div>
+          <div class="stat-item">
+            <strong>100%</strong>
+            <span>دفع فوري كاش أو إنستاباي</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <div class="live-badge"><span class="dot"></span> تحديث أسعار البورصة اليوم</div>
+        <h3>ملخص سريع لأعلى الأسعار</h3>
+        <div class="quick-prices" id="quickPricesList"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- قسم المواد والأسعار -->
+  <section id="materials" class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2>أسعار الخردة والمخلفات اليوم</h2>
+        <p>اختر النوع وأضفه مباشرة إلى طلب البيع الخاص بك</p>
+      </div>
+      <div class="materials-grid" id="materialsGrid"></div>
+    </div>
+  </section>
+
+  <!-- حاسبة الأسعار الفورية -->
+  <section id="calculator" class="section calc-section">
+    <div class="container">
+      <div class="calc-box">
+        <div class="calc-info">
+          <span class="pill-light">حاسبة فورية دقيقة</span>
+          <h2>احسب هتكسب كام من خردتك</h2>
+          <p>اختر نوع الخردة والوزن التقريبي بالكيلو، وهنحسبلك المبلغ الإجمالي فوراً.</p>
+
+          <div class="form-group">
+            <label>نوع الخردة / المخلفات</label>
+            <select id="calcMaterial" onchange="calculatePrice()"></select>
+          </div>
+
+          <div class="form-group">
+            <label>الكمية التقريبية (بالكيلو جرام)</label>
+            <input type="number" id="calcWeight" value="10" min="1" max="50000" oninput="calculatePrice()">
+          </div>
+
+          <div class="calc-result">
+            <span>القيمة التقديرية:</span>
+            <strong id="calcTotal">0 جنيه</strong>
+          </div>
+
+          <button class="btn-primary full-width" onclick="addFromCalculator()">
+            <i class="fa-solid fa-plus"></i> أضف الكمية لطلب البيع
+          </button>
+        </div>
+
+        <div class="calc-visual">
+          <div class="tip-card">
+            <i class="fa-solid fa-lightbulb"></i>
+            <h4>نصيحة لزيادة ربحك</h4>
+            <p>فرز المعادن (فصل النحاس عن الحديد والألومنيوم) وتفريغ الزجاجات البلاستيك بيرفع سعر الكيلو بنسبة تصل إلى <strong>25%</strong>!</p>
+          </div>
+          <div class="tip-card">
+            <i class="fa-solid fa-scale-balanced"></i>
+            <h4>ميزان إلكتروني معتمد</h4>
+            <p>جميع مناديبنا مزودون بموازين ديجيتال معايرة لضمان حقك بالجرام.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- خطوات العمل -->
+  <section id="how" class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2>كيف تبيع خردتك في 3 خطوات؟</h2>
+        <p>عملية سهلة، سريعة، وآمنة تماماً</p>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <i class="fa-solid fa-list-check step-icon"></i>
+          <h3>حدد الكميات</h3>
+          <p>اختر أنواع الخردة أو المخلفات الموجودة لديك وحدد الوزن التقريبي من الحاسبة.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <i class="fa-solid fa-truck-fast step-icon"></i>
+          <h3>احجز موعد الاستلام</h3>
+          <p>أدخل عنوانك ورقم هاتفك، وسيصلك أقرب مندوب في الموعد المناسب لك.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <i class="fa-solid fa-money-bill-wave step-icon"></i>
+          <h3>اوزن واستلم كاش</h3>
+          <p>يتم الوزن أمامك بدقة وتستلم المبلغ فوراً كاش أو عبر InstaPay / فودافون كاش.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- مراكز التجميع -->
+  <section id="branches" class="section branches-section">
+    <div class="container">
+      <div class="section-header">
+        <h2>مراكز التجميع الرئيسية</h2>
+        <p>تقدر تطلب مندوب لباب البيت أو تسلّم بنفسك في أقرب فرع ليك</p>
+      </div>
+      <div class="branches-grid">
+        <div class="branch-card">
+          <h4><i class="fa-solid fa-location-dot"></i> فرع العاشر من رمضان</h4>
+          <p>المنطقة الصناعية الثالثة - بجوار موقف الأردنية</p>
+          <span>يومياً من 8 صباحاً حتى 10 مساءً</span>
+        </div>
+        <div class="branch-card">
+          <h4><i class="fa-solid fa-location-dot"></i> فرع القاهرة (جسر السويس)</h4>
+          <p>شارع جمال عبد الناصر - المنطقة الصناعية</p>
+          <span>يومياً من 9 صباحاً حتى 11 مساءً</span>
+        </div>
+        <div class="branch-card">
+          <h4><i class="fa-solid fa-location-dot"></i> فرع الجيزة (أكتوبر)</h4>
+          <p>المنطقة الصناعية الرابعة - محور خدمات</p>
+          <span>يومياً من 8 صباحاً حتى 9 مساءً</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- سلة طلب البيع الجانبية -->
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="cart-header">
+      <h3><i class="fa-solid fa-truck-pickup"></i> طلب بيع خردة</h3>
+      <button onclick="toggleCart()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="cart-body" id="cartItems"></div>
+    <div class="cart-footer">
+      <div class="cart-total-row">
+        <span>الإجمالي التقديري:</span>
+        <strong id="cartTotal">0 جنيه</strong>
+      </div>
+      <form id="orderForm" onsubmit="submitOrder(event)">
+        <input type="text" id="custName" placeholder="الاسم بالكامل" required>
+        <input type="tel" id="custPhone" placeholder="رقم الموبايل (واتساب)" required>
+        <input type="text" id="custAddress" placeholder="العنوان بالتفصيل" required>
+        <select id="paymentMethod">
+          <option value="كاش عند الاستلام">الدفع: كاش عند الاستلام</option>
+          <option value="InstaPay">الدفع: InstaPay</option>
+          <option value="فودافون كاش">الدفع: فودافون كاش</option>
+        </select>
+        <button type="submit" class="btn-primary full-width">تأكيد طلب المندوب</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- الشات بوت الذكي -->
+  <button class="chat-fab" onclick="toggleChat()" title="تحدث مع المساعد الذكي">
+    <i class="fa-solid fa-comments"></i>
+    <span>اسألنا</span>
+  </button>
+
+  <div class="chat-window" id="chatWindow">
+    <div class="chat-header">
+      <div class="chat-agent">
+        <div class="agent-avatar"><i class="fa-solid fa-robot"></i></div>
+        <div>
+          <h4>مساعد إيكو سكراب</h4>
+          <small><span class="online-dot"></span> متصل الآن للرد الفوري</small>
+        </div>
+      </div>
+      <button onclick="toggleChat()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <div class="chat-messages" id="chatMessages">
+      <div class="msg bot">
+        أهلاً بيك في <strong>إيكو سكراب</strong>! ♻️<br>
+        أنا هنا أساعدك تعرف أسعار الخردة اليوم، أو تحسب قيمة اللي عندك، أو تطلب مندوب لباب البيت. تحب تسأل عن إيه؟
+      </div>
+    </div>
+
+    <div class="quick-replies">
+      <button onclick="sendQuick('أسعار الخردة النهاردة إيه؟')">الأسعار اليوم</button>
+      <button onclick="sendQuick('أقل كمية للاستلام كام؟')">أقل كمية</button>
+      <button onclick="sendQuick('طرق الدفع المتاحة؟')">طرق الدفع</button>
+      <button onclick="sendQuick('إزاي أطلب مندوب؟')">طلب مندوب</button>
+    </div>
+
+    <form class="chat-input-area" onsubmit="handleChatSubmit(event)">
+      <input type="text" id="chatInput" placeholder="اكتب سؤالك هنا..." autocomplete="off">
+      <button type="submit"><i class="fa-solid fa-paper-plane"></i></button>
+    </form>
+  </div>
+
+  <!-- التذييل -->
+  <footer class="footer">
+    <div class="container">
+      <p>© 2026 منصة إيكو سكراب لإعادة التدوير وتجارة الخردة — نحو بيئة أنظف واقتصاد دائري مستدام.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
